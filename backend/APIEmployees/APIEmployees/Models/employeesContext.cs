@@ -38,7 +38,11 @@ namespace APIEmployees.Models
                 entity.Property(e => e.Id)
                     .HasColumnName("id");
 
-                entity.Property(e => e.AbsenceTypeId).HasColumnName("absenceTypeId");
+                entity.Property(e => e.AbsenceTypeId)
+                    .HasColumnName("absenceTypeId");
+
+                entity.Property(e => e.AbsenceTypeId)
+                    .HasColumnName("employeeId");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("date")
@@ -52,12 +56,18 @@ namespace APIEmployees.Models
                     .HasColumnType("date")
                     .HasColumnName("startDate");
 
-                entity.Property(e => e.StateId).HasColumnName("stateId");
+                entity.Property(e => e.StateId)
+                    .HasColumnName("stateId");
 
                 entity.HasOne(d => d.AbsenceType)
                     .WithMany(p => p.AbsenceRequests)
                     .HasForeignKey(d => d.AbsenceTypeId)
                     .HasConstraintName("fk_absenceTypeId");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.AbsenceRequests)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("fk_absenceempId");
 
                 entity.HasOne(d => d.State)
                     .WithMany(p => p.AbsenceRequests)

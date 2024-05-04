@@ -84,7 +84,7 @@ namespace APIEmployees.Controllers
         }
 
         [HttpPut]
-        [Route("editContactDetails/{roleId:int}")]
+        [Route("editEmployee/{roleId:int}")]
         public IActionResult editEmployeeContactDetails([FromBody] Employee employee, int roleId)
         {
             Employee employeeToEdit = _dbContext.Employees.Find(employee.Id);

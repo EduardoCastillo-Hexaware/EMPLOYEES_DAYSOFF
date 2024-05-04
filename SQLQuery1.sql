@@ -112,11 +112,13 @@ GO
 	CREATE TABLE absenceRequest(
 		id int PRIMARY KEY IDENTITY(1,1),
 		absenceTypeId int,
+		employeeId int,
 		stateId int,
 		startDate date,
 		endDate date,
 		requestDate date,
 		CONSTRAINT fk_absenceTypeId FOREIGN KEY (absenceTypeId) REFERENCES absenceTypes(id),
+		CONSTRAINT fk_absenceempId FOREIGN KEY (employeeId) REFERENCES employee(id),
 		CONSTRAINT fk_stateId FOREIGN KEY (stateId) REFERENCES states(id)
 	)
 	GO

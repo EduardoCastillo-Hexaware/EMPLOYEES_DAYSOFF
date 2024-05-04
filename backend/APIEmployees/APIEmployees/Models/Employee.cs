@@ -24,5 +24,7 @@ namespace APIEmployees.Models
         public virtual Gender? Gender { get; set; } = null!;
         [JsonIgnore]
         public virtual ICollection<User> Users { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<AbsenceRequest> AbsenceRequests { get; set; }
     }
 }
