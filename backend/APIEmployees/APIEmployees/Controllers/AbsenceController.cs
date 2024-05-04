@@ -21,16 +21,59 @@ namespace APIEmployees.Controllers
         [Route("Get")]
         public IActionResult getAbsenceRequests()
         {
-            List<AbsenceRequest> users = new List<AbsenceRequest>();
+            List<AbsenceRequest> absences = new List<AbsenceRequest>();
             try
             {
-                users = _dbContext.AbsenceRequests.Include(e => e.Employee).Include(at => at.AbsenceType).ToList();
-                return StatusCode(StatusCodes.Status200OK, new { message = "ok", response = users });
+                absences = _dbContext.AbsenceRequests.Include(e => e.Employee).Include(at => at.AbsenceType).ToList();
+                return StatusCode(StatusCodes.Status200OK, new { message = "ok", response = absences });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message, response = users });
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message, response = absences });
             }
         }
+
+        [HttpGet]
+        [Route("create")]
+        public IActionResult createAbsenceRequests([FromBody] AbsenceRequest absenceRequest)
+        {
+            try
+            {
+                _dbContext.AbsenceRequests.Add(absenceRequest);   
+                return StatusCode(StatusCodes.Status200OK, new { message = "Absence Request Submited!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("chageStatus/{absRequestId:int}/{statusId:int}")]
+        public IActionResult changeStatus( int absRequestId, int statusId)
+        {
+            AbsenceRequest absR = _dbContext.AbsenceRequests.Find(absRequestId);
+            State state = _dbContext.States.Find(statusId);
+
+            if (absR == null) { return BadRequest("Absence Request was not found!"); }
+            if (state == null) { return BadRequest("State to save does not exist!"); }
+
+            try
+            {
+                absR.State = state;
+                _dbContext.AbsenceRequests.Update(absR);
+                _dbContext.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, new { message = "Absence Request Submited!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status200OK, new { message = ex.Message });
+            }
+        }
+
+
+
+
     }
 }
